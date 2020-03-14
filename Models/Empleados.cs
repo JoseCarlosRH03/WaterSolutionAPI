@@ -16,8 +16,8 @@ namespace WaterSolutionAPI.Models
         public string ApellidosEmpleado { get; set; }
         public string CedulaEmpleado { get; set; }
         public DateTime FechaEmpleado { get; set; }
-        public int IdTelefornoEmpleado { get; set; }
-        public int IdDireccionEmpleado { get; set; }
+        public string TelefornoEmpleado { get; set; }
+        public string DireccionEmpleado { get; set; }
         public int CargoidCargo { get; set; }
         public int SeccionIdSeccion { get; set; }
 

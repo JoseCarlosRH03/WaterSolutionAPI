@@ -38,7 +38,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-ICD9Q78; Initial Catalog=WaterSolutionDB; Integrated Security=true");
+//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-KFQ53JN\\SQLEXPRESS; Initial Catalog=WaterSolutionDB; Integrated Security=true");
 //            }
 //        }
 
@@ -67,7 +67,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.PersonaId)
-                    .HasName("PK__Cliente__7C34D3233F353106");
+                    .HasName("PK__Cliente__7C34D323F45F3BD0");
 
                 entity.Property(e => e.PersonaId)
                     .HasColumnName("PersonaID")
@@ -106,7 +106,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
             modelBuilder.Entity<Cotizaciones>(entity =>
             {
                 entity.HasKey(e => e.CotizacionId)
-                    .HasName("PK__Cotizaci__30443A596324F302");
+                    .HasName("PK__Cotizaci__30443A59D149E217");
 
                 entity.Property(e => e.CotizacionId)
                     .HasColumnName("CotizacionID")
@@ -180,26 +180,33 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.ApellidosEmpleado)
                     .IsRequired()
-                    .HasMaxLength(4);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.CargoidCargo).HasColumnName("cargoidCargo");
 
                 entity.Property(e => e.CedulaEmpleado)
                     .IsRequired()
-                    .HasColumnName("cedulaEmpleado");
+                    .HasColumnName("cedulaEmpleado")
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.DireccionEmpleado)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FechaEmpleado).HasColumnName("fechaEmpleado");
-
-                entity.Property(e => e.IdDireccionEmpleado).HasColumnName("idDireccionEmpleado");
-
-                entity.Property(e => e.IdTelefornoEmpleado).HasColumnName("idTelefornoEmpleado");
 
                 entity.Property(e => e.NombreEmpleado)
                     .IsRequired()
                     .HasColumnName("nombreEmpleado")
-                    .HasMaxLength(4);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.SeccionIdSeccion).HasColumnName("seccionIdSeccion");
+
+                entity.Property(e => e.TelefornoEmpleado)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.CargoidCargoNavigation)
                     .WithMany(p => p.Empleados)
