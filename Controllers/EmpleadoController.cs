@@ -28,7 +28,7 @@ namespace WaterSolutionAPI.Controllers
         }
 
         // GET: api/Empleado/5
-        [HttpGet("{id}", Name = "GetId")]
+        [HttpGet("{id}", Name = "GetById")]
         public async Task<Empleados> GetById(int id)
         {
             return await _empleados.GetByID(id);
@@ -45,7 +45,7 @@ namespace WaterSolutionAPI.Controllers
 
             await _empleados.Save(model);
 
-            return CreatedAtAction("GetId", new { model.IdEmpleado }, model);
+            return CreatedAtAction("GetById", new { model.IdEmpleado }, model);
         }
 
         // PUT: api/Empleado/5
