@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
 
 namespace WaterSolutionAPI.Interfaces
@@ -14,6 +15,7 @@ namespace WaterSolutionAPI.Interfaces
 		Task<Empleados> Save(Empleados model);
 		Task<Empleados> Edit(Empleados model);
 		bool Exist(int id);
+		Task<EmpleadoDTO> Longin(string usuario, string password);
 
 	}
 }

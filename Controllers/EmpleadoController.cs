@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
 
 namespace WaterSolutionAPI.Controllers
@@ -32,6 +33,12 @@ namespace WaterSolutionAPI.Controllers
         public async Task<Empleados> GetById(int id)
         {
             return await _empleados.GetByID(id);
+        }
+        [Route("Login")]
+        [HttpGet]
+        public async Task<ActionResult<EmpleadoDTO>> Login()
+        {
+            return await _empleados.Longin( "joseRH",  "12341234");
         }
 
         // POST: api/Empleado
