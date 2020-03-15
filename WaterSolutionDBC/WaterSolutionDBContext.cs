@@ -23,6 +23,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
         public virtual DbSet<DetalleCotizacion> DetalleCotizacion { get; set; }
         public virtual DbSet<Empleados> Empleados { get; set; }
         public virtual DbSet<Material> Material { get; set; }
+        public virtual DbSet<PassworLost> PassworLost { get; set; }
         public virtual DbSet<PermisoRole> PermisoRole { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RolesPermisos> RolesPermisos { get; set; }
@@ -38,7 +39,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-KFQ53JN\\SQLEXPRESS; Initial Catalog=WaterSolutionDB; Integrated Security=true");
+//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-ICD9Q78; Initial Catalog=WaterSolutionDB; Integrated Security=true");
 //            }
 //        }
 
@@ -67,7 +68,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.PersonaId)
-                    .HasName("PK__Cliente__7C34D323F45F3BD0");
+                    .HasName("PK__Cliente__7C34D3233F353106");
 
                 entity.Property(e => e.PersonaId)
                     .HasColumnName("PersonaID")
@@ -106,7 +107,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
             modelBuilder.Entity<Cotizaciones>(entity =>
             {
                 entity.HasKey(e => e.CotizacionId)
-                    .HasName("PK__Cotizaci__30443A59D149E217");
+                    .HasName("PK__Cotizaci__30443A596324F302");
 
                 entity.Property(e => e.CotizacionId)
                     .HasColumnName("CotizacionID")
@@ -227,6 +228,34 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PassworLost>(entity =>
+            {
+                entity.HasKey(e => e.IdPassworLost)
+                    .HasName("PK__PassworL__E18FE816448D1B4B");
+
+                entity.Property(e => e.IdPassworLost)
+                    .HasColumnName("idPassworLost")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Extencion)
+                    .IsRequired()
+                    .HasColumnName("extencion")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnName("fecha")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.PassworLost)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PassworLost_Usuario");
             });
 
             modelBuilder.Entity<PermisoRole>(entity =>
@@ -405,9 +434,12 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                 entity.Property(e => e.NombreUsuario)
                     .IsRequired()
                     .HasColumnName("nombreUsuario")
-                    .HasMaxLength(4);
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.PasswordUsuario).HasColumnName("passwordUsuario");
+                entity.Property(e => e.PasswordUsuario)
+                    .IsRequired()
+                    .HasColumnName("passwordUsuario")
+                    .HasMaxLength(50);
 
                 entity.HasOne(d => d.EmpleadoUsuarioidEmpleadoNavigation)
                     .WithMany(p => p.Usuarios)
