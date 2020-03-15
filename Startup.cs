@@ -32,6 +32,9 @@ namespace WaterSolutionAPI
             services.AddDbContext<WaterSolutionDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
             services.AddScoped<IEmpleados, EmpleadoServices>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);  
 
             services.AddControllers();
         }
