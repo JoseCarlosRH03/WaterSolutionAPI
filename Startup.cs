@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.Servicios;
 using WaterSolutionAPI.WaterSolutionDBC;
 namespace WaterSolutionAPI
 {
@@ -28,6 +30,8 @@ namespace WaterSolutionAPI
         {
 
             services.AddDbContext<WaterSolutionDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+
+            services.AddScoped<IEmpleados, EmpleadoServices>();
 
             services.AddControllers();
         }
