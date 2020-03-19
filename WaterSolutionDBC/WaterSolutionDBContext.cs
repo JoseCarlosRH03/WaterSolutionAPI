@@ -76,7 +76,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.Apellidos)
                     .IsRequired()
-                    .HasMaxLength(30)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Cedula)
@@ -95,7 +95,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
-                    .HasMaxLength(30)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Telefono)
@@ -113,12 +113,12 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .HasColumnName("CotizacionID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Estado)
+                entity.Property(e => e.EstadoCotizacion)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Fecha)
+                entity.Property(e => e.fechaCotizacion)
                     .HasColumnName("fecha")
                     .HasColumnType("date");
 
@@ -224,7 +224,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .HasColumnName("MaterialID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Nombre)
+                entity.Property(e => e.NombreMaterial)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -388,7 +388,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Fecha)
+                entity.Property(e => e.fechaSolicitud)
                     .HasColumnName("fecha")
                     .HasColumnType("date");
 

@@ -15,7 +15,7 @@ namespace WaterSolutionAPI.Models
         public string Descripcion { get; set; }
         public string DireccionSolicitud { get; set; }
         public string Sector { get; set; }
-        public DateTime Fecha { get; set; }
+        public DateTime fechaSolicitud { get; set; }
         public string Estado { get; set; }
         public string TipoSolicitud { get; set; }
         public int SeccionId { get; set; }

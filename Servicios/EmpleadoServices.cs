@@ -82,7 +82,6 @@ namespace WaterSolutionAPI.Servicios
 
 		public async Task<EmpleadoDTO> Longin(string usuario, string password)
 		{
-
 			using (SqlConnection sql = new SqlConnection(_connectionString))
 			{
 				using (SqlCommand cmd = new SqlCommand("MostrarTodo", sql))

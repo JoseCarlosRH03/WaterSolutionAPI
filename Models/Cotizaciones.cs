@@ -12,8 +12,8 @@ namespace WaterSolutionAPI.Models
 
         public int CotizacionId { get; set; }
         public double TotalCotizado { get; set; }
-        public DateTime Fecha { get; set; }
-        public string Estado { get; set; }
+        public DateTime fechaCotizacion { get; set; }
+        public string EstadoCotizacion { get; set; }
         public int SolicitudId { get; set; }
 
         public virtual Solicitud Solicitud { get; set; }
