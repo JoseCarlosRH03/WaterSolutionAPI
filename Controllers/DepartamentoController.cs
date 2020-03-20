@@ -23,6 +23,7 @@ namespace WaterSolutionAPI.Controllers
 
         // POST: api/Departamento
         [HttpPost]
+        [Route("save")]
         public async Task<ActionResult> Post([FromBody] Departamentos model)
         {
             if (!ModelState.IsValid) return BadRequest();
