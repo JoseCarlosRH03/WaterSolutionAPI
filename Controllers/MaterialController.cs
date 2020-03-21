@@ -24,7 +24,7 @@ namespace WaterSolutionAPI.Controllers
         [Route("save")]
         public async Task<ActionResult> Post([FromBody] Material model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -47,7 +47,7 @@ namespace WaterSolutionAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (Extist(id)) return BadRequest();
+                if (!Extist(id)) return BadRequest();
                 
                 throw ex;
             }

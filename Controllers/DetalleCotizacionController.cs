@@ -14,6 +14,12 @@ namespace WaterSolutionAPI.Controllers
     public class DetalleCotizacionController : ControllerBase
     {
         private readonly IDetalleCotizacion _detalleCotizacion;
+
+        public DetalleCotizacionController(IDetalleCotizacion detalleCotizacion)
+        {
+            _detalleCotizacion = detalleCotizacion;
+        }
+
         // POST: api/DetalleCotizacion
         [HttpPost]
         [Route("save")]
