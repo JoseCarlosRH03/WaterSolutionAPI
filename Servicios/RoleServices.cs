@@ -3,29 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.Models;
 using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
-	public class DetalleCotizacionService : IDetalleCotizacion
+	public class RoleServices : IRole
 	{
 		private readonly WaterSolutionDBContext _context;
 
-		public DetalleCotizacionService(WaterSolutionDBContext context)
+		public RoleServices(WaterSolutionDBContext contex)
 		{
-			_context = context;
+			_context = contex;
 		}
 
-		public async Task<DetalleCotizacion> save(DetalleCotizacion model)
+		public async Task<Role> save(Role model)
 		{
-			await _context.DetalleCotizacion.AddAsync(model);
+			await _context.Role.AddAsync(model);
 			await _context.SaveChangesAsync();
+
 			return model;
 		}
 
-		public async Task<DetalleCotizacion> Edit(DetalleCotizacion model)
+		public async Task<Role> Edit(Role model)
 		{
 			try
 			{
@@ -36,12 +37,11 @@ namespace WaterSolutionAPI.Servicios
 			{
 				throw ex;
 			}
+
 			return model;
 		}
 
-		public bool Exists(int id)
-		{
-			return _context.DetalleCotizacion.Any(x => x.DetalleCotizacionId == id);
-		}
+		public bool Exists(int id) => _context.Role.Any(x => x.IdRole == id);
+		
 	}
 }
