@@ -3,24 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.Models;
 using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
-	public class DetalleCotizacionService : IDetalleCotizacion
+	public class MaterialServices : IMaterial
 	{
 		private readonly WaterSolutionDBContext _context;
 
-		public async Task<DetalleCotizacion> save(DetalleCotizacion model)
+		public MaterialServices(WaterSolutionDBContext context)
 		{
-			await _context.DetalleCotizacion.AddAsync(model);
+			_context = context;
+		}
+
+		public async Task<Material> save(Material model)
+		{
+			await _context.Material.AddAsync(model);
 			await _context.SaveChangesAsync();
+
 			return model;
 		}
 
-		public async Task<DetalleCotizacion> Edit(DetalleCotizacion model)
+		public async Task<Material> Edit(Material model)
 		{
 			try
 			{
@@ -34,9 +40,6 @@ namespace WaterSolutionAPI.Servicios
 			return model;
 		}
 
-		public bool Exists(int id)
-		{
-			return _context.DetalleCotizacion.Any(x => x.DetalleCotizacionId == id);
-		}
+		public bool Exists(int id) => _context.Material.Any(x => x.MaterialId == id);
 	}
 }
