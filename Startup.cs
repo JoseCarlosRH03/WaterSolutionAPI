@@ -39,6 +39,7 @@ namespace WaterSolutionAPI
             services.AddScoped<IDetalleCotizacion, DetalleCotizacionService>();
             services.AddScoped<IMaterial, MaterialServices>();
             services.AddScoped<IRole, RoleServices>();
+            services.AddScoped<IPermisoRole, PermisoRoleServices>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
