@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WaterSolutionAPI.Models;
-using WaterSolutionAPI.Properties;
+using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
