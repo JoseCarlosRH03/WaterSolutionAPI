@@ -34,11 +34,12 @@ namespace WaterSolutionAPI.Controllers
         {
             return await _empleados.GetByID(id);
         }
-        [Route("Login")]
         [HttpGet]
-        public async Task<ActionResult<EmpleadoDTO>> Login()
+        [Route("Login/{usuario}/{password}")]
+        public async Task<ActionResult<EmpleadoDTO>> Login(string usuario, string password)
         {
-            return await _empleados.Longin( "joseRH",  "12341234");
+           
+            return await _empleados.Longin(usuario, password);
         }
 
         // POST: api/Empleado
