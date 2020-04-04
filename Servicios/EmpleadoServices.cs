@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
-using WaterSolutionAPI.WaterSolutionDBC;
+using WaterSolutionAPI.WaterSoluctionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
@@ -33,22 +33,26 @@ namespace WaterSolutionAPI.Servicios
 			return await result;
 		}
 
-		public async Task<Empleados> GetByID(int id)
+		public async Task<List<EmpleadoDTO>> ListadoEmpleados()
 		{
-			var result = await _context.Empleados.Include(x => x.CargoidCargoNavigation)
-				.Include(x => x.SeccionIdSeccionNavigation).FirstOrDefaultAsync(x => x.IdEmpleado == id);
-
-			var result2 = await _context.Cargo.Include(x => x.RoleIdRoleNavigation)
-				.FirstOrDefaultAsync(x => x.IdCargo == result.CargoidCargoNavigation.IdCargo);
-
-			result.CargoidCargoNavigation = result2;
-
-			var result3 = await _context.RolesPermisos.Include(x => x.IdPermisoNavigation)
-				.Where(x => x.IdRole == result2.RoleIdRoleNavigation.IdRole).ToListAsync();
-
-			result.CargoidCargoNavigation.RoleIdRoleNavigation.RolesPermisos = result3;
-
-			return result;
+			using (SqlConnection sql = new SqlConnection(_connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("ListaEmpleado", sql))
+				{
+					cmd.CommandType = System.Data.CommandType.StoredProcedure;
+					List<EmpleadoDTO> response = new List<EmpleadoDTO>();
+					await sql.OpenAsync();
+					var permisos = _context.RolesPermisos.Include(x => x.IdPermisoNavigation).ToList();
+					using (var reader = await cmd.ExecuteReaderAsync())
+					{
+						while(await reader.ReadAsync())
+						{
+							response.Add(MapToValue(reader, GetPermisos(reader, permisos)));
+						}
+					}
+					return response;
+				}
+			}
 		}
 
 		public async Task<Empleados> Save(Empleados model)
@@ -91,26 +95,14 @@ namespace WaterSolutionAPI.Servicios
 					cmd.Parameters.Add(new SqlParameter("@password", password));
 					EmpleadoDTO response = new EmpleadoDTO();
 					List<PermisoRole> lista = new List<PermisoRole>();
+					var permisos = _context.RolesPermisos.Include(x => x.IdPermisoNavigation).ToList();
 					await sql.OpenAsync();
 
 					using (var reader = await cmd.ExecuteReaderAsync())
 					{
-						var number = 1;
-
-						while (await reader.ReadAsync())
+						if (await reader.ReadAsync())
 						{
-							if (number == 1)
-							{
-								var permisos = await _context.RolesPermisos.Include(x => x.IdPermisoNavigation).Where(x => x.IdRole == (int)reader["idRole"]).ToListAsync();
-								number = 2;
-
-								foreach (var item in permisos)
-								{
-									item.IdPermisoNavigation.RolesPermisos = null;
-									lista.Add(item.IdPermisoNavigation); 
-								}
-							}
-							response = MapToValue(reader,lista);
+							response = MapToValue(reader, GetPermisos(reader, permisos));
 						}
 					}
 					return response;
@@ -133,8 +125,23 @@ namespace WaterSolutionAPI.Servicios
 				nombreDepartamento = reader["nombreDepartamento"].ToString(),
 				nombreCargo = reader["nombreCargo"].ToString(),
 				nombreRole = reader["nombreRole"].ToString(),
-				Permiso = lista,
+				Permiso = new List<PermisoRole>(lista),
 			};
+		}
+
+		private List<PermisoRole> GetPermisos(SqlDataReader reader, List<RolesPermisos> permisos)
+		{
+			List<PermisoRole> lista = new List<PermisoRole>();
+
+			var valores = permisos.Where(x => x.IdRole == (int)reader["idRole"]);
+
+			foreach (var item in valores)
+			{
+				item.IdPermisoNavigation.RolesPermisos = null;
+				lista.Add(item.IdPermisoNavigation);
+			}
+
+			return lista;
 		}
 	}
 

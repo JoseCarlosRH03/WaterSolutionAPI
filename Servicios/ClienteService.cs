@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
-using WaterSolutionAPI.WaterSolutionDBC;
+using WaterSolutionAPI.WaterSoluctionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {

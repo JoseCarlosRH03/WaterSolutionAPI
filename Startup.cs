@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.Servicios;
-using WaterSolutionAPI.WaterSolutionDBC;
+using WaterSolutionAPI.WaterSoluctionDBC;
 namespace WaterSolutionAPI
 {
     public class Startup
