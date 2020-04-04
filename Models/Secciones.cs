@@ -8,7 +8,6 @@ namespace WaterSolutionAPI.Models
         public Secciones()
         {
             Empleados = new HashSet<Empleados>();
-            Solicitud = new HashSet<Solicitud>();
         }
 
         public int IdSeccion { get; set; }
@@ -17,6 +16,5 @@ namespace WaterSolutionAPI.Models
 
         public virtual Departamentos DepartamentoIdDepartamentoNavigation { get; set; }
         public virtual ICollection<Empleados> Empleados { get; set; }
-        public virtual ICollection<Solicitud> Solicitud { get; set; }
     }
 }

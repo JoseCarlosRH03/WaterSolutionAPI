@@ -9,24 +9,24 @@ using WaterSolutionAPI.WaterSoluctionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
-	public class PermisoRoleServices : IPermisoRole
+	public class RolesPermisoServices : IRolePermisos 
 	{
-		private WaterSolutionDBContext _context;
+		private readonly WaterSolutionDBContext _context;
 
-		public PermisoRoleServices(WaterSolutionDBContext context)
+		public RolesPermisoServices(WaterSolutionDBContext context)
 		{
 			_context = context;
 		}
 
-		public async Task<PermisoRole> save(PermisoRole model)
+		public async Task<RolesPermisos> save(RolesPermisos model)
 		{
-			await _context.PermisoRole.AddAsync(model);
+			await _context.RolesPermisos.AddAsync(model);
 			await _context.SaveChangesAsync();
 
 			return model;
 		}
 
-		public async Task<PermisoRole> Edit(PermisoRole model)
+		public async Task<RolesPermisos> Edit(RolesPermisos model)
 		{
 			try
 			{
@@ -42,6 +42,5 @@ namespace WaterSolutionAPI.Servicios
 		}
 
 		public bool Exists(int id) => _context.RolesPermisos.Any(x => x.IdPermiso == id);
-		
 	}
 }

@@ -5,11 +5,6 @@ namespace WaterSolutionAPI.Models
 {
     public partial class Cliente
     {
-        public Cliente()
-        {
-            Solicitud = new HashSet<Solicitud>();
-        }
-
         public int PersonaId { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
@@ -17,7 +12,5 @@ namespace WaterSolutionAPI.Models
         public string Direccion { get; set; }
         public string Telefono { get; set; }
         public DateTime Fecha { get; set; }
-
-        public virtual ICollection<Solicitud> Solicitud { get; set; }
     }
 }

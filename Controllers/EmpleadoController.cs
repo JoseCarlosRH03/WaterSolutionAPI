@@ -29,10 +29,11 @@ namespace WaterSolutionAPI.Controllers
         }
 
         // GET: api/Empleado/5
-        [HttpGet("{id}", Name = "GetById")]
-        public async Task<Empleados> GetById(int id)
+        [HttpGet]
+        [Route("ListadoEmpleado")]
+        public async Task<List<EmpleadoDTO>> ListadoEmpleado()
         {
-            return await _empleados.GetByID(id);
+            return await _empleados.ListadoEmpleados();
         }
         [HttpGet]
         [Route("Login/{usuario}/{password}")]

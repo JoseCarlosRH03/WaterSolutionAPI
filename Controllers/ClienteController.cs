@@ -20,9 +20,9 @@ namespace WaterSolutionAPI.Controllers
         {
             _cliente = cliente;
         }
-
-        [Route("MostrarClientes")]
+        
         [HttpGet]
+        [Route("MostrarClientes/{id}")]
         public async Task<List<ClienteDTO>> MostrarClientes(int id)
         {
             return await _cliente.MostrarCliente(id);
@@ -44,8 +44,8 @@ namespace WaterSolutionAPI.Controllers
         }
 
         // PUT: api/Cliente/5
-        [Route("Edit")]
         [HttpPut("{id}")]
+        [Route("Edit")]
         public async Task<ActionResult> Put(int id, [FromBody] Cliente model)
         {
             if(id != model.PersonaId)
