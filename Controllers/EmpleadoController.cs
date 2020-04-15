@@ -35,6 +35,14 @@ namespace WaterSolutionAPI.Controllers
         {
             return await _empleados.ListadoEmpleados();
         }
+
+        [HttpGet]
+        [Route("FormEmpleados")]
+        public async Task<FormEmpleadoDTO> FormEmpleados()
+        {
+            return await _empleados.FormEMpleado();
+        }
+
         [HttpGet]
         [Route("Login/{usuario}/{password}")]
         public async Task<ActionResult<EmpleadoDTO>> Login(string usuario, string password)
@@ -45,6 +53,7 @@ namespace WaterSolutionAPI.Controllers
 
         // POST: api/Empleado
         [HttpPost]
+        [Route("save")]
         public async Task<ActionResult> Post([FromBody] Empleados model)
         {
             if (!ModelState.IsValid)
@@ -54,7 +63,7 @@ namespace WaterSolutionAPI.Controllers
 
             await _empleados.Save(model);
 
-            return CreatedAtAction("GetById", new { model.IdEmpleado }, model);
+            return Ok();
         }
 
         // PUT: api/Empleado/5

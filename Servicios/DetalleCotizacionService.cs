@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Interfaces;
-using WaterSolutionAPI.WaterSoluctionDBC;
+using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {

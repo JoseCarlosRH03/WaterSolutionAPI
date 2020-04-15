@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
-using WaterSolutionAPI.WaterSoluctionDBC;
+using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
@@ -57,6 +57,10 @@ namespace WaterSolutionAPI.Servicios
 
 		public async Task<Empleados> Save(Empleados model)
 		{
+			await _context.Usuarios.AddAsync(model.usuario);
+			await _context.SaveChangesAsync();
+			model.IdUsuario = model.usuario.IdUsuario;
+			model.usuario = null;
 			await _context.Empleados.AddAsync(model);
 			await _context.SaveChangesAsync();
 
@@ -67,8 +71,12 @@ namespace WaterSolutionAPI.Servicios
 		{
 
 			try
-			{
-				_ = _context.Entry(model).State == EntityState.Modified;
+			{	
+				_context.Entry(model.usuario).State = EntityState.Modified;
+				await _context.SaveChangesAsync();
+				model.IdUsuario = model.usuario.IdUsuario;
+				model.usuario = null;
+				_context.Entry(model).State = EntityState.Modified;
 				await _context.SaveChangesAsync();
 			}
 			catch (Exception ex)
@@ -114,16 +122,23 @@ namespace WaterSolutionAPI.Servicios
 		{
 			return new EmpleadoDTO
 			{
+				idUsuario = (int)reader["idUsuario"],
+				passwordUsuario = reader["passwordUsuario"].ToString(),
+				estadoUsuario = (bool)reader["estadoUsuario"],
 				nombreUsuario = reader["nombreUsuario"].ToString(),
+				idEmpleado = (int)reader["idEmpleado"],
 				nombreEmpleado = reader["nombreEmpleado"].ToString(),
 				ApellidosEmpleado = reader["ApellidosEmpleado"].ToString(),
 				cedulaEmpleado = reader["cedulaEmpleado"].ToString(),
 				fechaEmpleado = Convert.ToDateTime(reader["fechaEmpleado"]),
-				TelefornoEmpleado = reader["TelefornoEmpleado"].ToString(),
+				TelefornoEmpleado = reader["TelefonoEmpleado"].ToString(),
 				DireccionEmpleado = reader["DireccionEmpleado"].ToString(),
 				nombreSeccion = reader["nombreSeccion"].ToString(),
+				idSeccion = (int)reader["IdSeccion"],
 				nombreDepartamento = reader["nombreDepartamento"].ToString(),
+				idDepartamento = (int)reader["idDepartamento"],
 				nombreCargo = reader["nombreCargo"].ToString(),
+				idCargo = (int)reader["idCargo"],
 				nombreRole = reader["nombreRole"].ToString(),
 				Permiso = new List<PermisoRole>(lista),
 			};
@@ -142,6 +157,19 @@ namespace WaterSolutionAPI.Servicios
 			}
 
 			return lista;
+		}
+
+		public async Task<FormEmpleadoDTO> FormEMpleado()
+		{
+			var cargos = await _context.Cargo.ToListAsync();
+			var Departamentos = await _context.Departamentos.Include(x => x.secciones).ToListAsync();
+
+			FormEmpleadoDTO FormEmpleado = new FormEmpleadoDTO {
+				cargos = cargos,
+				departamentos = Departamentos
+			};
+
+			return FormEmpleado;
 		}
 	}
 

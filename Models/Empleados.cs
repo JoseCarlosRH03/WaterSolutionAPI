@@ -7,8 +7,7 @@ namespace WaterSolutionAPI.Models
     {
         public Empleados()
         {
-            RutaEmpleado = new HashSet<RutaEmpleado>();
-            Usuarios = new HashSet<Usuarios>();
+            Ruta = new HashSet<Ruta>();
         }
 
         public int IdEmpleado { get; set; }
@@ -16,14 +15,15 @@ namespace WaterSolutionAPI.Models
         public string ApellidosEmpleado { get; set; }
         public string CedulaEmpleado { get; set; }
         public DateTime FechaEmpleado { get; set; }
-        public string TelefornoEmpleado { get; set; }
+        public string TelefonoEmpleado { get; set; }
         public string DireccionEmpleado { get; set; }
         public int CargoidCargo { get; set; }
         public int SeccionIdSeccion { get; set; }
+        public int IdUsuario { get; set; }
 
         public virtual Cargo CargoidCargoNavigation { get; set; }
+        public virtual Usuarios usuario { get; set; }
         public virtual Secciones SeccionIdSeccionNavigation { get; set; }
-        public virtual ICollection<RutaEmpleado> RutaEmpleado { get; set; }
-        public virtual ICollection<Usuarios> Usuarios { get; set; }
+        public virtual ICollection<Ruta> Ruta { get; set; }
     }
 }

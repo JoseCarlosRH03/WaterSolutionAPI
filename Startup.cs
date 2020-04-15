@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.Servicios;
-using WaterSolutionAPI.WaterSoluctionDBC;
+using WaterSolutionAPI.WaterSolutionDBC;
 namespace WaterSolutionAPI
 {
     public class Startup
@@ -62,7 +62,7 @@ namespace WaterSolutionAPI
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
             app.UseRouting();
 
             app.UseAuthorization();
