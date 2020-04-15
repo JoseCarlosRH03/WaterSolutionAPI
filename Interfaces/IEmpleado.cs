@@ -16,6 +16,7 @@ namespace WaterSolutionAPI.Interfaces
 		Task<Empleados> Edit(Empleados model);
 		bool Exist(int id);
 		Task<EmpleadoDTO> Longin(string usuario, string password);
+		Task<FormEmpleadoDTO> FormEMpleado();
 
 	}
 }

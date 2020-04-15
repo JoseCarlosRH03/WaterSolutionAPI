@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using WaterSolutionAPI.Models;
 
-namespace WaterSolutionAPI.WaterSoluctionDBC
+namespace WaterSolutionAPI.WaterSolutionDBC
 {
     public partial class WaterSolutionDBContext : DbContext
     {
@@ -28,7 +28,6 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RolesPermisos> RolesPermisos { get; set; }
         public virtual DbSet<Ruta> Ruta { get; set; }
-        public virtual DbSet<RutaEmpleado> RutaEmpleado { get; set; }
         public virtual DbSet<RutaSolicitud> RutaSolicitud { get; set; }
         public virtual DbSet<Secciones> Secciones { get; set; }
         public virtual DbSet<Solicitud> Solicitud { get; set; }
@@ -39,7 +38,7 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-KFQ53JN\\SQLEXPRESS; Initial Catalog=WaterSolutionDB; Integrated Security=true");
+//                optionsBuilder.UseSqlServer("Data Source=WINDOWS-ICD9Q78; Initial Catalog=WaterSolutionDB; Integrated Security=true");
 //            }
 //        }
 
@@ -68,15 +67,13 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.HasKey(e => e.PersonaId)
-                    .HasName("PK__Cliente__7C34D323F45F3BD0");
+                    .HasName("PK__Cliente__7C34D3233F353106");
 
-                entity.Property(e => e.PersonaId)
-                    .HasColumnName("PersonaID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.PersonaId).HasColumnName("PersonaID");
 
                 entity.Property(e => e.Apellidos)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Cedula)
@@ -95,7 +92,7 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Telefono)
@@ -107,11 +104,9 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
             modelBuilder.Entity<Cotizaciones>(entity =>
             {
                 entity.HasKey(e => e.CotizacionId)
-                    .HasName("PK__Cotizaci__30443A59D149E217");
+                    .HasName("PK__Cotizaci__30443A596324F302");
 
-                entity.Property(e => e.CotizacionId)
-                    .HasColumnName("CotizacionID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.CotizacionId).HasColumnName("CotizacionID");
 
                 entity.Property(e => e.EstadoCotizacion)
                     .IsRequired()
@@ -142,9 +137,7 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
             modelBuilder.Entity<DetalleCotizacion>(entity =>
             {
-                entity.Property(e => e.DetalleCotizacionId)
-                    .HasColumnName("DetalleCotizacionID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.DetalleCotizacionId).HasColumnName("DetalleCotizacionID");
 
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
 
@@ -195,7 +188,11 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FechaEmpleado).HasColumnName("fechaEmpleado");
+                entity.Property(e => e.FechaEmpleado)
+                    .HasColumnName("fechaEmpleado")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
                 entity.Property(e => e.NombreEmpleado)
                     .IsRequired()
@@ -204,7 +201,7 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
                 entity.Property(e => e.SeccionIdSeccion).HasColumnName("seccionIdSeccion");
 
-                entity.Property(e => e.TelefornoEmpleado)
+                entity.Property(e => e.TelefonoEmpleado)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
@@ -213,6 +210,12 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
                     .WithMany(p => p.Empleados)
                     .HasForeignKey(d => d.CargoidCargo);
 
+                entity.HasOne(d => d.usuario)
+                    .WithMany(p => p.Empleados)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Usuario_Empleado");
+
                 entity.HasOne(d => d.SeccionIdSeccionNavigation)
                     .WithMany(p => p.Empleados)
                     .HasForeignKey(d => d.SeccionIdSeccion);
@@ -220,11 +223,9 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
             modelBuilder.Entity<Material>(entity =>
             {
-                entity.Property(e => e.MaterialId)
-                    .HasColumnName("MaterialID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MaterialId).HasColumnName("MaterialID");
 
-                entity.Property(e => e.NombreMaterial)
+                entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -233,11 +234,9 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
             modelBuilder.Entity<PassworLost>(entity =>
             {
                 entity.HasKey(e => e.IdPassworLost)
-                    .HasName("PK__PassworL__E18FE8163DE3B971");
+                    .HasName("PK__PassworL__E18FE816448D1B4B");
 
-                entity.Property(e => e.IdPassworLost)
-                    .HasColumnName("idPassworLost")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdPassworLost).HasColumnName("idPassworLost");
 
                 entity.Property(e => e.Extencion)
                     .IsRequired()
@@ -247,7 +246,7 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
                 entity.Property(e => e.Fecha)
                     .HasColumnName("fecha")
-                    .HasColumnType("datetime");
+                    .HasColumnType("date");
 
                 entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
@@ -299,43 +298,24 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
 
             modelBuilder.Entity<Ruta>(entity =>
             {
-                entity.Property(e => e.RutaId)
-                    .HasColumnName("RutaID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.RutaId).HasColumnName("RutaID");
 
                 entity.Property(e => e.Fecha)
                     .HasColumnName("fecha")
                     .HasColumnType("date");
-            });
 
-            modelBuilder.Entity<RutaEmpleado>(entity =>
-            {
-                entity.Property(e => e.RutaEmpleadoId)
-                    .HasColumnName("RutaEmpleadoID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdEmpleado).HasColumnName("idEmpleado");
 
-                entity.Property(e => e.EmpleadoId).HasColumnName("EmpleadoID");
-
-                entity.Property(e => e.RutaId).HasColumnName("RutaID");
-
-                entity.HasOne(d => d.Empleado)
-                    .WithMany(p => p.RutaEmpleado)
-                    .HasForeignKey(d => d.EmpleadoId)
+                entity.HasOne(d => d.IdEmpleadoNavigation)
+                    .WithMany(p => p.Ruta)
+                    .HasForeignKey(d => d.IdEmpleado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RutaEnpleado_Empleado");
-
-                entity.HasOne(d => d.Ruta)
-                    .WithMany(p => p.RutaEmpleado)
-                    .HasForeignKey(d => d.RutaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RutaEnplead_Ruta");
+                    .HasConstraintName("FK_Ruta_Empleado");
             });
 
             modelBuilder.Entity<RutaSolicitud>(entity =>
             {
-                entity.Property(e => e.RutaSolicitudId)
-                    .HasColumnName("RutaSolicitudID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.RutaSolicitudId).HasColumnName("RutaSolicitudID");
 
                 entity.Property(e => e.RutaId).HasColumnName("RutaID");
 
@@ -365,15 +345,13 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
                     .HasColumnName("nombreSeccion");
 
                 entity.HasOne(d => d.DepartamentoIdDepartamentoNavigation)
-                    .WithMany(p => p.Secciones)
+                    .WithMany(p => p.secciones)
                     .HasForeignKey(d => d.DepartamentoIdDepartamento);
             });
 
             modelBuilder.Entity<Solicitud>(entity =>
             {
-                entity.Property(e => e.SolicitudId)
-                    .HasColumnName("SolicitudID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.SolicitudId).HasColumnName("SolicitudID");
 
                 entity.Property(e => e.Descripcion)
                     .IsRequired()
@@ -390,8 +368,8 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FechaSolicitud)
-                    .HasColumnName("fechaSolicitud")
+                entity.Property(e => e.Fecha)
+                    .HasColumnName("fecha")
                     .HasColumnType("date");
 
                 entity.Property(e => e.PersonaId).HasColumnName("PersonaID");
@@ -407,35 +385,37 @@ namespace WaterSolutionAPI.WaterSoluctionDBC
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Persona)
+                    .WithMany(p => p.Solicitud)
+                    .HasForeignKey(d => d.PersonaId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Cliente_Solicitud");
+
+                entity.HasOne(d => d.Seccion)
+                    .WithMany(p => p.Solicitud)
+                    .HasForeignKey(d => d.SeccionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Seccion_Solicitud");
             });
 
             modelBuilder.Entity<Usuarios>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario);
 
-                entity.HasIndex(e => e.EmpleadoUsuarioidEmpleado);
-
                 entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
-
-                entity.Property(e => e.EmpleadoUsuarioidEmpleado).HasColumnName("empleadoUsuarioidEmpleado");
 
                 entity.Property(e => e.EstadoUsuario).HasColumnName("estadoUsuario");
 
                 entity.Property(e => e.NombreUsuario)
                     .IsRequired()
                     .HasColumnName("nombreUsuario")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.PasswordUsuario)
                     .IsRequired()
                     .HasColumnName("passwordUsuario")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.EmpleadoUsuarioidEmpleadoNavigation)
-                    .WithMany(p => p.Usuarios)
-                    .HasForeignKey(d => d.EmpleadoUsuarioidEmpleado);
+                    .HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

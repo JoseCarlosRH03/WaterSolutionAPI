@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
-using WaterSolutionAPI.WaterSoluctionDBC;
+using WaterSolutionAPI.WaterSolutionDBC;
 
 namespace WaterSolutionAPI.Servicios
 {
@@ -27,6 +27,7 @@ namespace WaterSolutionAPI.Servicios
 
 		public async Task<Cliente> Save(Cliente model)
 		{
+
 			await _context.Cliente.AddAsync(model);
 			await _context.SaveChangesAsync();
 
@@ -49,6 +50,9 @@ namespace WaterSolutionAPI.Servicios
 
 		public async Task<List<ClienteDTO>> MostrarCliente(int id)
 		{
+		//	var rutasEmpleados =  await _context.RutaEmpleado.Include(x => x.Empleado).ToListAsync();
+			var rutaSolicitud = await _context.RutaSolicitud.Include(x => x.Ruta).ToListAsync();
+
 			using (SqlConnection sql = new SqlConnection(_connectionString))
 			{
 				using (SqlCommand cmd = new SqlCommand("SolicitudCotizacion", sql))
@@ -65,6 +69,11 @@ namespace WaterSolutionAPI.Servicios
 							response.Add(MapToValue(reader));
 						}
 					}
+
+					foreach (var item in response)
+					{
+						rutaSolicitud.Where(x => x.SolicitudId == item.solicitudID).ToList();
+					}
 					return response;
 				}
 			}
@@ -75,26 +84,19 @@ namespace WaterSolutionAPI.Servicios
 		{
 			return new ClienteDTO
 			{
-				Nombre = reader["Nombre"].ToString(),
-				Apellidos = reader["Apellidos"].ToString(),
-				Cedula = reader["Cedula"].ToString(),
-				Direccion = reader["Direccion"].ToString(),
-				Telefono = reader["Telefono"].ToString(),
-				fecha = Convert.ToDateTime(reader["fecha"]),
-				Descripcion = reader["Descripcion"].ToString(),
-				DireccionSolicitud = reader["DireccionSolicitud"].ToString(),
-				Sector = reader["Sector"].ToString(),
-				fechaSolicitud = reader["fechaSolicitud"].ToString(),
-				Estado = reader["Estado"].ToString(),
-				TipoSolicitud = reader["TipoSolicitud"].ToString(),
-				nombreSeccion = reader["nombreSeccion"].ToString(),
-				TotalCotizado = Convert.ToDouble(reader["TotalCotizado"]),
+
+				solicitudID = (int)(reader["SolicitudID"]),
+				descripcion = reader["Descripcion"].ToString(),
+				direccionSolicitud = reader["DireccionSolicitud"].ToString(),
+				sector = reader["Sector"].ToString(),
+				fechaSolicitud = reader["fecha"].ToString(),
+				estado = reader["Estado"].ToString(),
+				tipoSolicitud = reader["TipoSolicitud"].ToString(),
+				seccionID = (int)(reader["SeccionID"]),
+				totalCotizado = Convert.ToDouble(reader["TotalCotizado"]),
 				fechaCotizacion = Convert.ToDateTime(reader["fechaCotizacion"]),
-				EstadoCotizacion = reader["EstadoCotizacion"].ToString(),
-				Cantidad = Convert.ToInt32(reader["Cantidad"]),
-				totalDetalle =	Convert.ToDouble(reader["totalDetalle"]),
-				presio = Convert.ToDouble(reader["presio"]),
-				NombreMaterial = reader["NombreMaterial"].ToString()
+				estadoCotizacion = reader["EstadoCotizacion"].ToString(),
+				cotizacionID = (int)(reader["CotizacionID"]),
 			};     
 		}
 		public bool Exists(int id)

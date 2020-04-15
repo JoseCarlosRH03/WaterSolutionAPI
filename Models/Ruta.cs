@@ -7,14 +7,14 @@ namespace WaterSolutionAPI.Models
     {
         public Ruta()
         {
-            RutaEmpleado = new HashSet<RutaEmpleado>();
             RutaSolicitud = new HashSet<RutaSolicitud>();
         }
 
         public int RutaId { get; set; }
         public DateTime Fecha { get; set; }
+        public int IdEmpleado { get; set; }
 
-        public virtual ICollection<RutaEmpleado> RutaEmpleado { get; set; }
+        public virtual Empleados IdEmpleadoNavigation { get; set; }
         public virtual ICollection<RutaSolicitud> RutaSolicitud { get; set; }
     }
 }
