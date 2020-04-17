@@ -18,7 +18,7 @@ namespace WaterSolutionAPI.ModelDTO
 		public string cedulaEmpleado { get; set; }
 		public DateTime fechaEmpleado { get; set; }
 		public string TelefornoEmpleado { get; set; }
-		public string DireccionEmpleado { get; set; }
+		public string direccionEmpleado { get; set; }
 		public string nombreSeccion { get; set; }
 		public int idSeccion { get; set; }
 		public string nombreDepartamento { get; set; }

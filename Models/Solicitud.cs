@@ -7,7 +7,6 @@ namespace WaterSolutionAPI.Models
     {
         public Solicitud()
         {
-            Cotizaciones = new HashSet<Cotizaciones>();
             RutaSolicitud = new HashSet<RutaSolicitud>();
         }
 
@@ -23,7 +22,7 @@ namespace WaterSolutionAPI.Models
 
         public virtual Cliente Persona { get; set; }
         public virtual Secciones Seccion { get; set; }
-        public virtual ICollection<Cotizaciones> Cotizaciones { get; set; }
+        public virtual Cotizaciones Cotizaciones { get; set; }
         public virtual ICollection<RutaSolicitud> RutaSolicitud { get; set; }
     }
 }

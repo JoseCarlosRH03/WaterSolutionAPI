@@ -11,7 +11,8 @@ namespace WaterSolutionAPI.Interfaces
 	{
 		Task<Cliente> Save(Cliente model);
 		Task<Cliente> Edit(Cliente model);
-		Task<List<ClienteDTO>> MostrarCliente(int id);
+		Task<List<Cliente>> ListaClientes();
 		bool Exists(int id);
+		Task<List<SolicitudDTO>> MotrarTodo(int id);
 	}
 }

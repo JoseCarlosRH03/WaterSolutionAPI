@@ -110,7 +110,8 @@ namespace WaterSolutionAPI.Servicios
 					{
 						if (await reader.ReadAsync())
 						{
-							response = MapToValue(reader, GetPermisos(reader, permisos));
+							var valor = GetPermisos(reader, permisos);
+							response = MapToValue(reader, valor);
 						}
 					}
 					return response;
@@ -132,11 +133,11 @@ namespace WaterSolutionAPI.Servicios
 				cedulaEmpleado = reader["cedulaEmpleado"].ToString(),
 				fechaEmpleado = Convert.ToDateTime(reader["fechaEmpleado"]),
 				TelefornoEmpleado = reader["TelefonoEmpleado"].ToString(),
-				DireccionEmpleado = reader["DireccionEmpleado"].ToString(),
+				direccionEmpleado = reader["DireccionEmpleado"].ToString(),
 				nombreSeccion = reader["nombreSeccion"].ToString(),
-				idSeccion = (int)reader["IdSeccion"],
+				idSeccion = (int)reader["idSeccion"],
 				nombreDepartamento = reader["nombreDepartamento"].ToString(),
-				idDepartamento = (int)reader["idDepartamento"],
+				idDepartamento = (int)reader["IdDepartamento"],
 				nombreCargo = reader["nombreCargo"].ToString(),
 				idCargo = (int)reader["idCargo"],
 				nombreRole = reader["nombreRole"].ToString(),

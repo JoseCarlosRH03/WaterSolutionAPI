@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -17,12 +18,12 @@ namespace WaterSolutionAPI.Servicios
 		private readonly WaterSolutionDBContext _context;
 
 		private readonly string _connectionString;
-
-		public ClienteService(WaterSolutionDBContext context, IConfiguration configuration)
+		private readonly IMapper _mapper;
+		public ClienteService(WaterSolutionDBContext context, IConfiguration configuration,IMapper mapper )
 		{
 			_context = context;
 			_connectionString = configuration.GetConnectionString("DefaultConnectionString");
-
+			_mapper = mapper;
 		}
 
 		public async Task<Cliente> Save(Cliente model)
@@ -48,60 +49,31 @@ namespace WaterSolutionAPI.Servicios
 			return model;
 		}
 
-		public async Task<List<ClienteDTO>> MostrarCliente(int id)
-		{
-		//	var rutasEmpleados =  await _context.RutaEmpleado.Include(x => x.Empleado).ToListAsync();
-			var rutaSolicitud = await _context.RutaSolicitud.Include(x => x.Ruta).ToListAsync();
-
-			using (SqlConnection sql = new SqlConnection(_connectionString))
-			{
-				using (SqlCommand cmd = new SqlCommand("SolicitudCotizacion", sql))
-				{
-					cmd.CommandType = System.Data.CommandType.StoredProcedure;
-					cmd.Parameters.Add(new SqlParameter("@idCliente", id));
-					var response = new List<ClienteDTO>();
-					await sql.OpenAsync();
-
-					using (var reader = await cmd.ExecuteReaderAsync())
-					{
-						while (await reader.ReadAsync())
-						{
-							response.Add(MapToValue(reader));
-						}
-					}
-
-					foreach (var item in response)
-					{
-						rutaSolicitud.Where(x => x.SolicitudId == item.solicitudID).ToList();
-					}
-					return response;
-				}
-			}
-
-		}
-
-		private ClienteDTO MapToValue(SqlDataReader reader)
-		{
-			return new ClienteDTO
-			{
-
-				solicitudID = (int)(reader["SolicitudID"]),
-				descripcion = reader["Descripcion"].ToString(),
-				direccionSolicitud = reader["DireccionSolicitud"].ToString(),
-				sector = reader["Sector"].ToString(),
-				fechaSolicitud = reader["fecha"].ToString(),
-				estado = reader["Estado"].ToString(),
-				tipoSolicitud = reader["TipoSolicitud"].ToString(),
-				seccionID = (int)(reader["SeccionID"]),
-				totalCotizado = Convert.ToDouble(reader["TotalCotizado"]),
-				fechaCotizacion = Convert.ToDateTime(reader["fechaCotizacion"]),
-				estadoCotizacion = reader["EstadoCotizacion"].ToString(),
-				cotizacionID = (int)(reader["CotizacionID"]),
-			};     
-		}
 		public bool Exists(int id)
 		{
 			return _context.Cliente.Any(x => x.PersonaId == id);
 		}
+
+		public async Task<List<Cliente>> ListaClientes()
+		{
+			return await _context.Cliente.ToListAsync();
+		}
+
+
+		public async Task<List<SolicitudDTO>> MotrarTodo(int id)
+		{
+			var solicitudes = await _context.Solicitud.Include(x => x.Cotizaciones)
+				.ThenInclude(b => b.DetalleCotizacion).ThenInclude(a => a.Material)
+				.Include(x => x.Seccion).ThenInclude(x => x.Departamento)
+				.Include(x =>x.RutaSolicitud).ThenInclude(x =>x.Ruta).ThenInclude(x =>x.empleadoRuta)
+				.Where(x =>x.PersonaId == id )
+				.ToListAsync();
+
+			var valor = _mapper.Map<List<SolicitudDTO>>(solicitudes);
+			    
+			return valor;
+			
+		}
+
 	}
 }

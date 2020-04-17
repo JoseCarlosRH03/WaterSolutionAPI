@@ -106,6 +106,10 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                 entity.HasKey(e => e.CotizacionId)
                     .HasName("PK__Cotizaci__30443A596324F302");
 
+                entity.HasIndex(e => e.SolicitudId)
+                    .HasName("UC_Solicitud")
+                    .IsUnique();
+
                 entity.Property(e => e.CotizacionId).HasColumnName("CotizacionID");
 
                 entity.Property(e => e.EstadoCotizacion)
@@ -120,8 +124,8 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                 entity.Property(e => e.SolicitudId).HasColumnName("SolicitudID");
 
                 entity.HasOne(d => d.Solicitud)
-                    .WithMany(p => p.Cotizaciones)
-                    .HasForeignKey(d => d.SolicitudId)
+                    .WithOne(p => p.Cotizaciones)
+                    .HasForeignKey<Cotizaciones>(d => d.SolicitudId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Cotizaciones_Solicitud");
             });
@@ -306,7 +310,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.IdEmpleado).HasColumnName("idEmpleado");
 
-                entity.HasOne(d => d.IdEmpleadoNavigation)
+                entity.HasOne(d => d.empleadoRuta)
                     .WithMany(p => p.Ruta)
                     .HasForeignKey(d => d.IdEmpleado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -344,7 +348,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .IsRequired()
                     .HasColumnName("nombreSeccion");
 
-                entity.HasOne(d => d.DepartamentoIdDepartamentoNavigation)
+                entity.HasOne(d => d.Departamento)
                     .WithMany(p => p.secciones)
                     .HasForeignKey(d => d.DepartamentoIdDepartamento);
             });

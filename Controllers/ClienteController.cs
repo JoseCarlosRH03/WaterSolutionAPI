@@ -23,9 +23,9 @@ namespace WaterSolutionAPI.Controllers
         
         [HttpGet]
         [Route("MostrarClientes/{id}")]
-        public async Task<List<ClienteDTO>> MostrarClientes(int id)
+        public async Task<List<SolicitudDTO>> MostrarClientes(int id)
         {
-            return await _cliente.MostrarCliente(id);
+            return await _cliente.MotrarTodo(id);
         }
       
         // POST: api/Cliente
@@ -41,6 +41,12 @@ namespace WaterSolutionAPI.Controllers
             await _cliente.Save(model);
 
             return Ok(model);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<Cliente>> Get()
+        {
+            return await _cliente.ListaClientes();
         }
 
         // PUT: api/Cliente/5
