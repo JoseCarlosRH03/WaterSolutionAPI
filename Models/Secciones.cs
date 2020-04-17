@@ -15,7 +15,7 @@ namespace WaterSolutionAPI.Models
         public string NombreSeccion { get; set; }
         public int? DepartamentoIdDepartamento { get; set; }
 
-        public virtual Departamentos DepartamentoIdDepartamentoNavigation { get; set; }
+        public virtual Departamentos Departamento { get; set; }
         public virtual ICollection<Empleados> Empleados { get; set; }
         public virtual ICollection<Solicitud> Solicitud { get; set; }
     }

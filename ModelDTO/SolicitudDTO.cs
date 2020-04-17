@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WaterSolutionAPI.Models;
 
 namespace WaterSolutionAPI.ModelDTO
 {
-	public class ClienteDTO
+	public class SolicitudDTO
 	{
-	
-		public int solicitudID { get; set; }
+		public int solicitudId { get; set; }
 		public string descripcion { get; set; }
 		public string direccionSolicitud { get; set; }
 		public string sector { get; set; }
-		public string fechaSolicitud { get; set; }
+		public DateTime fecha { get; set; }
 		public string estado { get; set; }
 		public string tipoSolicitud { get; set; }
-		public int seccionID { get; set; }
-		public double totalCotizado { get; set; }
-		public DateTime fechaCotizacion { get; set; }
-		public string estadoCotizacion { get; set; }
-		public int cotizacionID { get; set; }
+		public int personaId { get; set; }
+		public virtual CotizacionesDTO Cotizaciones { get; set; }
+		public SeccionDTO seccion { get; set; }
+		public List<RutaSolicitudDTO> rutaSolicitud { get; set; }
+
+
 	}
 }

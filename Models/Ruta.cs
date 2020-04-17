@@ -14,7 +14,7 @@ namespace WaterSolutionAPI.Models
         public DateTime Fecha { get; set; }
         public int IdEmpleado { get; set; }
 
-        public virtual Empleados IdEmpleadoNavigation { get; set; }
+        public virtual Empleados empleadoRuta { get; set; }
         public virtual ICollection<RutaSolicitud> RutaSolicitud { get; set; }
     }
 }

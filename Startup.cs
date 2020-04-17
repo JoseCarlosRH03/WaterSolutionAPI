@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.ModelDTO;
+using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Servicios;
 using WaterSolutionAPI.WaterSolutionDBC;
 namespace WaterSolutionAPI
@@ -28,6 +31,19 @@ namespace WaterSolutionAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(configuration => 
+            {
+                configuration.CreateMap<Solicitud, SolicitudDTO>();
+                configuration.CreateMap<Empleados, EmpleadoDTO2>();
+                configuration.CreateMap<Departamentos, DepartamentoDTO>();
+                configuration.CreateMap<Secciones, SeccionDTO>();
+                configuration.CreateMap<Cotizaciones, CotizacionesDTO>();
+                configuration.CreateMap<DetalleCotizacion, DetalleCotizacionDTO>();
+                configuration.CreateMap<Material, MaterialDTO>();
+                configuration.CreateMap<RutaSolicitud, RutaSolicitudDTO>();
+                configuration.CreateMap<Ruta, RutaDTO>();
+
+            }, typeof(Startup));
             services.AddCors();
 
             services.AddDbContext<WaterSolutionDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
