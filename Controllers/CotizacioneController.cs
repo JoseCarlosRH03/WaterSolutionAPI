@@ -26,16 +26,15 @@ namespace WaterSolutionAPI.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
       
-            await _cotizacion.save(model);
+           var data = await _cotizacion.save(model);
 
-            return Ok(model);
+            return Ok(data);
         }
 
         [HttpPut]
         [Route("Edit")]
-        public async Task<ActionResult<Cotizaciones>> Put([FromBody] Cotizaciones model, int id)
+        public async Task<ActionResult<Cotizaciones>> Put([FromBody] Cotizaciones model)
         {
-            if (id != model.CotizacionId) return BadRequest();
 
             try
             {
@@ -43,7 +42,7 @@ namespace WaterSolutionAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (!Exists(id)) return BadRequest();
+              return BadRequest();
                 
                 throw ex;
             }

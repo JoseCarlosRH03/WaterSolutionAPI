@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.ModelDTO;
 
 namespace WaterSolutionAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace WaterSolutionAPI.Controllers
         // POST: api/DetalleCotizacion
         [HttpPost]
         [Route("save")]
-        public async Task<ActionResult> Post([FromBody] DetalleCotizacion model)
+        public async Task<ActionResult> Post([FromBody] List<DetalleCotizacion> model)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -33,10 +34,10 @@ namespace WaterSolutionAPI.Controllers
         }
 
         // PUT: api/DetalleCotizacion/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] DetalleCotizacion model)
+        [HttpPut]
+        public async Task<ActionResult> Put( [FromBody]List<DetalleCotizacion> model)
         {
-            if (id != model.CotizacionId) return BadRequest();
+           
 
             try
             {
@@ -44,11 +45,30 @@ namespace WaterSolutionAPI.Controllers
             }
             catch (Exception ex)
             {
-                if(!Exists(id)) return BadRequest();
+               return BadRequest();
                 throw ex;
             }
             return Ok(model);
         }
+
+        [HttpPut]
+        [Route("delete")]
+        public async Task<ActionResult> put([FromBody] List<DetalleCotizacion> model)
+        {
+
+
+            try
+            {
+                await _detalleCotizacion.Delete(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+                throw ex;
+            }
+            return Ok(model);
+        }
+
 
         public bool Exists(int id) => _detalleCotizacion.Exists(id);
        

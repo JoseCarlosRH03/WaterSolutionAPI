@@ -30,6 +30,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
         public virtual DbSet<Ruta> Ruta { get; set; }
         public virtual DbSet<RutaSolicitud> RutaSolicitud { get; set; }
         public virtual DbSet<Secciones> Secciones { get; set; }
+        public virtual DbSet<Seguimientos> Seguimientos { get; set; }
         public virtual DbSet<Solicitud> Solicitud { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
 
@@ -192,6 +193,8 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Estado).HasColumnName("estado");
+
                 entity.Property(e => e.FechaEmpleado)
                     .HasColumnName("fechaEmpleado")
                     .HasColumnType("date");
@@ -304,8 +307,8 @@ namespace WaterSolutionAPI.WaterSolutionDBC
             {
                 entity.Property(e => e.RutaId).HasColumnName("RutaID");
 
-                entity.Property(e => e.Fecha)
-                    .HasColumnName("fecha")
+                entity.Property(e => e.FechaRuta)
+                    .HasColumnName("FechaRuta")
                     .HasColumnType("date");
 
                 entity.Property(e => e.IdEmpleado).HasColumnName("idEmpleado");
@@ -349,8 +352,41 @@ namespace WaterSolutionAPI.WaterSolutionDBC
                     .HasColumnName("nombreSeccion");
 
                 entity.HasOne(d => d.Departamento)
-                    .WithMany(p => p.secciones)
+                    .WithMany(p => p.Secciones)
                     .HasForeignKey(d => d.DepartamentoIdDepartamento);
+            });
+
+            modelBuilder.Entity<Seguimientos>(entity =>
+            {
+                entity.HasKey(e => e.IdSeguimientos)
+                    .HasName("PK__Seguimie__3EE439A6965D6231");
+
+                entity.Property(e => e.IdSeguimientos).HasColumnName("idSeguimientos");
+
+                entity.Property(e => e.FechaSeguimiento)
+                    .HasColumnName("fechaSeguimiento")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.IdEmpleado).HasColumnName("idEmpleado");
+
+                entity.Property(e => e.IdSolicitud).HasColumnName("idSolicitud");
+
+                entity.Property(e => e.Seguimiento)
+                    .IsRequired()
+                    .HasColumnName("seguimiento")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmpleadoSeguimiento)
+                    .WithMany(p => p.Seguimientos)
+                    .HasForeignKey(d => d.IdEmpleado)
+                    .HasConstraintName("FK_Seguimientos_Empleado");
+
+                entity.HasOne(d => d.IdSolicitudNavigation)
+                    .WithMany(p => p.Seguimientos)
+                    .HasForeignKey(d => d.IdSolicitud)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Seguimientos_Solicitud");
             });
 
             modelBuilder.Entity<Solicitud>(entity =>
@@ -359,7 +395,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.Descripcion)
                     .IsRequired()
-                    .HasMaxLength(30)
+                    .HasMaxLength(256)
                     .IsUnicode(false);
 
                 entity.Property(e => e.DireccionSolicitud)
@@ -369,7 +405,7 @@ namespace WaterSolutionAPI.WaterSolutionDBC
 
                 entity.Property(e => e.Estado)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fecha)

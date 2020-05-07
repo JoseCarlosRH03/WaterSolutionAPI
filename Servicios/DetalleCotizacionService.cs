@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WaterSolutionAPI.Models;
 using WaterSolutionAPI.Interfaces;
 using WaterSolutionAPI.WaterSolutionDBC;
+using WaterSolutionAPI.ModelDTO;
 
 namespace WaterSolutionAPI.Servicios
 {
@@ -18,24 +19,32 @@ namespace WaterSolutionAPI.Servicios
 			_context = context;
 		}
 
-		public async Task<DetalleCotizacion> save(DetalleCotizacion model)
+		public async Task<List<DetalleCotizacion>> save(List<DetalleCotizacion> model)
 		{
-			await _context.DetalleCotizacion.AddAsync(model);
+			await _context.DetalleCotizacion.AddRangeAsync(model);
 			await _context.SaveChangesAsync();
 			return model;
 		}
 
-		public async Task<DetalleCotizacion> Edit(DetalleCotizacion model)
+		public async Task<List<DetalleCotizacion>> Edit(List<DetalleCotizacion>  model)
 		{
 			try
 			{
-				_context.Entry(model).State = EntityState.Modified;
+				_context.DetalleCotizacion.UpdateRange(model);
 				await _context.SaveChangesAsync();
 			}
 			catch (Exception ex)
 			{
 				throw ex;
 			}
+			return model;
+		}
+
+		public async Task<List<DetalleCotizacion>> Delete(List<DetalleCotizacion> model)
+		{
+			 _context.DetalleCotizacion.RemoveRange(model);
+			await _context.SaveChangesAsync();
+
 			return model;
 		}
 

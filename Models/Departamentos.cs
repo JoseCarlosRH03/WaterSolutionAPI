@@ -7,12 +7,12 @@ namespace WaterSolutionAPI.Models
     {
         public Departamentos()
         {
-            secciones = new HashSet<Secciones>();
+            Secciones = new HashSet<Secciones>();
         }
 
         public int IdDepartamento { get; set; }
         public string NombreDepartamento { get; set; }
 
-        public virtual ICollection<Secciones> secciones { get; set; }
+        public virtual ICollection<Secciones> Secciones { get; set; }
     }
 }

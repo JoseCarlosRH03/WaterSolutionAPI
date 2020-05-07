@@ -8,6 +8,7 @@ namespace WaterSolutionAPI.Models
         public Empleados()
         {
             Ruta = new HashSet<Ruta>();
+            Seguimientos = new HashSet<Seguimientos>();
         }
 
         public int IdEmpleado { get; set; }
@@ -20,10 +21,12 @@ namespace WaterSolutionAPI.Models
         public int CargoidCargo { get; set; }
         public int SeccionIdSeccion { get; set; }
         public int IdUsuario { get; set; }
+        public bool? Estado { get; set; }
 
         public virtual Cargo CargoidCargoNavigation { get; set; }
         public virtual Usuarios usuario { get; set; }
         public virtual Secciones SeccionIdSeccionNavigation { get; set; }
         public virtual ICollection<Ruta> Ruta { get; set; }
+        public virtual ICollection<Seguimientos> Seguimientos { get; set; }
     }
 }

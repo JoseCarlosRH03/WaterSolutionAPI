@@ -26,6 +26,22 @@ namespace WaterSolutionAPI.Servicios
 			return model;
 		}
 
+		public async Task<List<Material>> Get(int id)
+		{
+			var result = await _context.Material.ToListAsync();
+
+			var detalle = await _context.DetalleCotizacion.Where(x => x.CotizacionId == id).ToListAsync();
+
+			foreach (var item in detalle)
+			{
+				result.RemoveAll(x => x.MaterialId == item.MaterialId);
+			}
+
+
+
+			return result;
+		}
+
 		public async Task<Material> Edit(Material model)
 		{
 			try

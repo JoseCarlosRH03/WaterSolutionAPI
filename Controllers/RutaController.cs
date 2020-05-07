@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WaterSolutionAPI.Interfaces;
+using WaterSolutionAPI.ModelDTO;
 using WaterSolutionAPI.Models;
 
 namespace WaterSolutionAPI.Controllers
@@ -24,11 +25,19 @@ namespace WaterSolutionAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Ruta model)
         {
-            if (ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
-            await _ruta.save(model);
+            return Ok(await _ruta.save(model));
+        }
 
-            return Ok(model);
+        // POST: api/Ruta
+        [HttpPost]
+        [Route("RutaSolicitud")]
+        public async Task<ActionResult> Post([FromBody] RutaSolicitud model)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+
+            return Ok(await _ruta.saveRutaSolicitud(model));
         }
 
         // PUT: api/Ruta/5
@@ -48,6 +57,22 @@ namespace WaterSolutionAPI.Controllers
             }
             return Ok(model);
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<RutaSolicitud> Get(int id)
+        {
+            return await _ruta.Getruta(id);
+        }
+
+
+        [HttpGet]
+        [Route("Seguimientos/{id}")]
+        public async Task<List<SeguimientosDTO>> Seguimientos(int id)
+        {
+            return await _ruta.Seguimientos(id);
+        }
+
 
         private bool Exists(int id) => _ruta.Exists(id);
 

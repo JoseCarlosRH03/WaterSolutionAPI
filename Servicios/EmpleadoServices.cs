@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,21 +17,23 @@ namespace WaterSolutionAPI.Servicios
 	public class EmpleadoServices : IEmpleados
 	{
 		private readonly WaterSolutionDBContext _context;
+		private readonly IMapper _mapper;
 
 		private readonly string _connectionString;
 
-		public EmpleadoServices(WaterSolutionDBContext context, IConfiguration configuration)
+		public EmpleadoServices(WaterSolutionDBContext context, IConfiguration configuration, IMapper mapper)
 		{
 			_context = context;
 			_connectionString = configuration.GetConnectionString("DefaultConnectionString");
+			_mapper = mapper;
 
 		}
 
 		public async Task<List<Empleados>> Get()
 		{
-			var result = _context.Empleados.ToListAsync();
+			var result = await _context.Empleados.ToListAsync();
 
-			return await result;
+			return  result;
 		}
 
 		public async Task<List<EmpleadoDTO>> ListadoEmpleados()
@@ -72,10 +75,14 @@ namespace WaterSolutionAPI.Servicios
 
 			try
 			{	
-				_context.Entry(model.usuario).State = EntityState.Modified;
-				await _context.SaveChangesAsync();
-				model.IdUsuario = model.usuario.IdUsuario;
-				model.usuario = null;
+				if(model.usuario != null)
+				{
+					_context.Entry(model.usuario).State = EntityState.Modified;
+					await _context.SaveChangesAsync();
+					model.IdUsuario = model.usuario.IdUsuario;
+					model.usuario = null;
+				}
+				
 				_context.Entry(model).State = EntityState.Modified;
 				await _context.SaveChangesAsync();
 			}
@@ -163,7 +170,7 @@ namespace WaterSolutionAPI.Servicios
 		public async Task<FormEmpleadoDTO> FormEMpleado()
 		{
 			var cargos = await _context.Cargo.ToListAsync();
-			var Departamentos = await _context.Departamentos.Include(x => x.secciones).ToListAsync();
+			var Departamentos = await _context.Departamentos.Include(x => x.Secciones).ToListAsync();
 
 			FormEmpleadoDTO FormEmpleado = new FormEmpleadoDTO {
 				cargos = cargos,
@@ -171,6 +178,15 @@ namespace WaterSolutionAPI.Servicios
 			};
 
 			return FormEmpleado;
+		}
+
+		public async Task<List<Empleados>> MostrarBrigadistas(int id)
+		{
+			var empleados = await _context.Empleados
+				.Where(x => x.Estado == true && x.CargoidCargo == 5 && x.SeccionIdSeccion == id)
+				.ToListAsync();
+
+			return empleados;
 		}
 	}
 

@@ -42,6 +42,7 @@ namespace WaterSolutionAPI
                 configuration.CreateMap<Material, MaterialDTO>();
                 configuration.CreateMap<RutaSolicitud, RutaSolicitudDTO>();
                 configuration.CreateMap<Ruta, RutaDTO>();
+                configuration.CreateMap<Seguimientos, SeguimientosDTO>();
 
             }, typeof(Startup));
             services.AddCors();

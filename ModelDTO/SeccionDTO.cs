@@ -7,13 +7,8 @@ namespace WaterSolutionAPI.ModelDTO
 {
 	public class SeccionDTO
 	{
-		public int IdSeccion { get; set; }
 		public string NombreSeccion { get; set; }
 		public DepartamentoDTO Departamento { get; set; }
-
-
-
-
 	}
 }
 
