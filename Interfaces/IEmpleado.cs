@@ -17,6 +17,7 @@ namespace WaterSolutionAPI.Interfaces
 		bool Exist(int id);
 		Task<EmpleadoDTO> Longin(string usuario, string password);
 		Task<FormEmpleadoDTO> FormEMpleado();
+		Task<List<Empleados>> MostrarBrigadistas(int id);
 
 	}
 }

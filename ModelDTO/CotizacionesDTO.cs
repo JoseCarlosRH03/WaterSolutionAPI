@@ -7,10 +7,12 @@ namespace WaterSolutionAPI.ModelDTO
 {
     public class CotizacionesDTO
     {
+        public int CotizacionId { get; set; }
         public double TotalCotizado { get; set; }
         public DateTime FechaCotizacion { get; set; }
         public string EstadoCotizacion { get; set; }
+        public int SolicitudId { get; set; }
 
-        public virtual ICollection<DetalleCotizacionDTO> DetalleCotizacion { get; set; }
+        public  ICollection<DetalleCotizacionDTO> DetalleCotizacion { get; set; }
     }
 }

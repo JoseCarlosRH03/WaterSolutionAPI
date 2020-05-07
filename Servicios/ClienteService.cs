@@ -59,13 +59,13 @@ namespace WaterSolutionAPI.Servicios
 			return await _context.Cliente.ToListAsync();
 		}
 
-
 		public async Task<List<SolicitudDTO>> MotrarTodo(int id)
 		{
 			var solicitudes = await _context.Solicitud.Include(x => x.Cotizaciones)
 				.ThenInclude(b => b.DetalleCotizacion).ThenInclude(a => a.Material)
 				.Include(x => x.Seccion).ThenInclude(x => x.Departamento)
 				.Include(x =>x.RutaSolicitud).ThenInclude(x =>x.Ruta).ThenInclude(x =>x.empleadoRuta)
+				.Include( x => x.Seguimientos).ThenInclude(x => x.EmpleadoSeguimiento)
 				.Where(x =>x.PersonaId == id )
 				.ToListAsync();
 

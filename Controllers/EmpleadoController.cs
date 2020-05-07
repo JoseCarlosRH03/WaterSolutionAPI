@@ -103,5 +103,12 @@ namespace WaterSolutionAPI.Controllers
             return _empleados.Exist(id);
         }
 
+        [HttpGet]
+        [Route("Brigadistas/{id}")]
+        public async Task<List<Empleados>> Brigadistas(int id)
+        {
+            return await _empleados.MostrarBrigadistas(id);
+        }
+
     }
 }

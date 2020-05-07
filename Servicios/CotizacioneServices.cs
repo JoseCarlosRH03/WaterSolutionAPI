@@ -21,7 +21,7 @@ namespace WaterSolutionAPI.Servicios
 		public async Task<Cotizaciones> save(Cotizaciones model)
 		{
 			await _context.Cotizaciones.AddAsync(model);
-			_ = _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
 
 			return model;
 		}

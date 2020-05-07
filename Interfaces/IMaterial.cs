@@ -10,6 +10,7 @@ namespace WaterSolutionAPI.Interfaces
 	{
 		Task<Material> save(Material model);
 		Task<Material> Edit(Material model);
+		Task<List<Material>> Get(int id);
 		bool Exists(int id);
 	}
 }
